@@ -13,10 +13,7 @@ class encoder:
         self.enc = rotaryio.IncrementalEncoder(pinA, pinB)
         self.current_position = None
         self.last_position = 0
-        self.encMap = [
-        [KC.VOLD, KC.VOLU],
-        [KC.LEFT, KC.RIGHT],
-    ]
+        self.encMap = []
 
 def updateEnc(encoder, activeLayer):
     kbd = Keyboard(usb_hid.devices)
