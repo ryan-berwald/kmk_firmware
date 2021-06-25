@@ -4,7 +4,7 @@ import rotaryio
 import board
 import usb_hid
 from adafruit_hid.consumer_control import ConsumerControl
-from kmk.internal_state import InternalState
+#from kmk.internal_state import InternalState
 
 consumerKeys = [226, 233, 234, 181, 182, 183]
 
