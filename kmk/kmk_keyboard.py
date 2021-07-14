@@ -302,8 +302,7 @@ class KMKKeyboard:
         To save RAM on boards that don't use Split, we don't import Split
         and do an isinstance check, but instead do string detection
         '''
-        if any(x.__class__.__module__ == 'kmk.modules.split' for x in self.modules):
-            return
+
 
         if not self.coord_mapping:
             self.coord_mapping = []
@@ -492,3 +491,46 @@ class KMKKeyboard:
 
             if self.state_changed:
                 self._print_debug_cycle()
+
+
+        '''self.state_changed = False
+        self.sandbox.active_layers = self.active_layers.copy()
+
+        self.before_matrix_scan()
+
+        self.matrix_update = (
+            self.sandbox.matrix_update
+        ) = self.matrix.scan_for_changes()
+        self.sandbox.secondary_matrix_update = self.secondary_matrix_update
+
+        self.after_matrix_scan()
+
+        self._handle_matrix_report(self.secondary_matrix_update)
+        self.secondary_matrix_update = None
+        self._handle_matrix_report(self.matrix_update)
+        self.matrix_update = None
+
+        self.before_hid_send()
+
+        if self.hid_pending:
+            self._send_hid()
+
+        self._old_timeouts_len = len(self._timeouts)
+        self._process_timeouts()
+        self._new_timeouts_len = len(self._timeouts)
+
+        if self._old_timeouts_len != self._new_timeouts_len:
+            self.state_changed = True
+            if self.hid_pending:
+                self._send_hid()
+
+        self.after_hid_send()
+
+        if self._trigger_powersave_enable:
+            self.powersave_enable()
+
+        if self._trigger_powersave_disable:
+            self.powersave_disable()
+
+        if self.state_changed:
+            self._print_debug_cycle()'''
