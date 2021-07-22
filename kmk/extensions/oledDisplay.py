@@ -102,52 +102,53 @@ class bmpInfo:
         return bitmap
 
 class oled(Extension):
-    def __init__(self, SDA, SCL, _displayType = "text", _filePath = None, _text = "ACTIVE LAYER", _width=128, _height=32, _tileWidth = 1, _tileHeight = 1, _gridWidth = 1, _gridHeight = 1):
+    def __init__(self, SDA, SCL, toDisplay = "ACTIVE LAYER", oWidth=128, oHeight=32, tileWidth = 128, tileHeight = 32, gridWidth = 1, gridHeight = 1):
         releaseDisp()
-        self.filePath = _filePath
-        self.displayType = _displayType
-        self.oText = _text
-        self.display = SSD1306(displayio.I2CDisplay(I2C(SDA, SCL), device_address=0x3C), width=_width, height=_height)
-        self.tileHeight = _tileHeight
-        self.tileWidth = _tileWidth
-        self.gridWidth = _gridWidth
-        self.gridHeight = _gridHeight
+        self._toDisplay = toDisplay
+        self._display = SSD1306(displayio.I2CDisplay(I2C(SDA, SCL), device_address=0x3C), width=oWidth, height=oHeight)
+        self._tileHeight = tileHeight
+        self._tileWidth = tileWidth
+        self._gridWidth = gridWidth
+        self._gridHeight = gridHeight
+        self._prevLayers = 0
 
     def updateOLED(self, sandbox):
-        if self.displayType.upper() == "IMG":
-            bmpinfo = bmpInfo(self.filePath)
+        try:
+            open(self._toDisplay, "rb")
+            bmpinfo = bmpInfo(self._toDisplay)
+
             #bmpinfo.display()
             # make the color at 0 index transparent.
             bmpinfo.palette.make_transparent(0)
             # Create the sprite TileGrid
-
             sprite1 = displayio.TileGrid(
                 bmpinfo.bitmap,
                 pixel_shader=bmpinfo.palette,
-                width=self.gridWidth,
-                height=self.gridHeight,
-                tile_width=self.tileWidth,
-                tile_height=self.tileHeight,
+                width=self._gridWidth,
+                height=self._gridHeight,
+                tile_width=self._tileWidth,
+                tile_height=self._tileHeight,
                 default_tile=0,
             )
             try:
                 sprite_group = displayio.Group()
-                self.display.show(sprite_group)
+                self._display.show(sprite_group)
                 sprite_group.append(sprite1)
             except Exception as e:
                 print(e)
-        else:
+        except OSError as e:
+            print("File does not exist, resorting to text!")
             import terminalio
             try:
                 import label
             except Exception as e:
                 print("You need to place the adafruit_displayio_text module in your lib folder")
-            if self.oText.upper() == "ACTIVE LAYER":
-                self.oText = "Active Layer: %s" % sandbox.active_layers[len(sandbox.active_layers)-1]
+            if self._toDisplay.upper() == "ACTIVE LAYER":
+                print("Active Layer: %s" % sandbox.active_layers[0])
+                text = "Active Layer: %s" % sandbox.active_layers[0]
             splash = displayio.Group()
-            self.display.show(splash)
-
-            text_area = label.Label(terminalio.FONT, text=self.oText, color=0xFFFFFF, x=28, y=15)
+            self._display.show(splash)
+            text_area = label.Label(terminalio.FONT, text=text, color=0xFFFFFF, x=28, y=15)
             splash.append(text_area)
 
     def on_runtime_enable(self, sandbox):
@@ -157,13 +158,18 @@ class oled(Extension):
         return
 
     def during_bootup(self, sandbox):
+        self.updateOLED(sandbox)
         return
 
     def before_matrix_scan(self, sandbox):
+        if sandbox.active_layers[0] != self._prevLayers:
+            print(sandbox.active_layers[0])
+            self._prevLayers = sandbox.active_layers[0]
+            self.updateOLED(sandbox)
         return
 
     def after_matrix_scan(self, sandbox):
-        self.updateOLED(sandbox)
+
         return
 
     def before_hid_send(self, sandbox):
