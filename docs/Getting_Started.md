@@ -54,7 +54,7 @@ if __name__ == '__main__':
 > This is your last chance. After this, there is no turning back. You take the blue pill—the story ends, you wake up in your bed and believe whatever you want to believe. You take the red pill—you stay in Wonderland, and I show you how deep the rabbit hole goes. Remember: all I'm offering is the truth. Nothing more.
 
 ### You're extremely lucky and you have a fully supported keyboard
-If your keyboard and microcontroller are officially supported, simply visit the page for your files, and dropping them on the root of the "flash drive". Those pages can be found [here](https://github.com/KMKfw/boards). You will need the `kb.py` and `main.py`. More advanced instructions can be found [here](config_and_keymap.md).
+If your keyboard and microcontroller are officially supported, simply visit the page for your files, and dropping them on the root of the "flash drive". Those pages can be found [here](https://github.com/KMKfw/kmk_firmware/tree/master/boards). You will need the `kb.py` and `main.py`. More advanced instructions can be found [here](config_and_keymap.md).
 Please note that we recommend using [KMKPython](https://github.com/KMKfw/kmkpython) for these boards as it is optimized for them. If using Circuitpython and NOT KMKPython, you will also need [boot.py](https://github.com/KMKfw/kmk_firmware/blob/master/boot.py)
 
 ### You've got another, maybe DIY, board and want to customise KMK for it  
@@ -67,10 +67,10 @@ First, be sure to understand how your device work, and particularly its specific
 And to go even further:
 - [Sequences](sequences.md) are used for sending multiple keystrokes in a single action
 - [Layers](layers.md) can transform the whole way your keyboard is behaving with a single touch
-- [ModTap](modtap.md) allow you tu customize the way a key behaves wether it is tapped or hold, and [TapDance](tapdance.md) depending on the number of times it is pressed
+- [ModTap](modtap.md) allow you to customize the way a key behaves wether it is tapped or hold, and [TapDance](tapdance.md) depending on the number of times it is pressed
 
 Want to have fun features such as RGB, split keyboards and more? Check out what builtin [modules](modules.md) and [extensions](extensions.md) can do!
-You can also get ideas from the various [user examples](https://github.com/KMKfw/user_keymaps) that we provide and dig into our [documentation](https://github.com/KMKfw/kmk_firmware/tree/master/docs)
+You can also get ideas from the various [user examples](https://github.com/KMKfw/kmk_firmware/tree/master/user_keymaps) that we provide and dig into our [documentation](https://github.com/KMKfw/kmk_firmware/tree/master/docs).
 
 <br>
 
